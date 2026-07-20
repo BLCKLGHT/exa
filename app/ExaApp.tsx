@@ -122,7 +122,7 @@ const activity = [
 ];
 
 const nav: { id: View; label: string; icon: string }[] = [
-  { id: "dashboard", label: "Dashboard", icon: "⌂" },
+  { id: "dashboard", label: "Today", icon: "⌂" },
   { id: "clients", label: "Clients", icon: "◫" },
   { id: "domains", label: "Domains", icon: "◎" },
   { id: "websites", label: "Websites", icon: "◇" },
@@ -254,14 +254,14 @@ export default function ExaApp() {
           <button className="mobile-brand" onClick={() => goTo("dashboard")} aria-label="Go to dashboard"><BrandMark /><span>EXA</span></button>
           <div className="crumb"><span>Hayes Communications</span><b>/</b><strong>{selectedClient?.name ?? nav.find((item) => item.id === view)?.label ?? "Settings"}</strong></div>
           <button className="search-trigger" onClick={() => setSearchOpen(true)}><span>⌕</span><span>Search anything…</span><kbd>⌘ K</kbd></button>
-          <button className="quick-add" onClick={() => setToast("Quick add is ready to connect")}>＋ <span>Quick add</span></button>
+          <button className="quick-add" onClick={() => setSearchOpen(true)}>Ask EXA <span>↗</span></button>
         </header>
 
         <div className="content">
           {selectedClient ? (
             <ClientDetail client={selectedClient} onBack={() => setSelectedClient(null)} setToast={setToast} />
           ) : view === "dashboard" ? (
-            <Dashboard onView={goTo} onClient={setSelectedClient} completedTasks={completedTasks} setCompletedTasks={setCompletedTasks} />
+            <Dashboard onView={goTo} onClient={setSelectedClient} onAsk={() => setSearchOpen(true)} completedTasks={completedTasks} setCompletedTasks={setCompletedTasks} />
           ) : view === "clients" ? (
             <ClientsPage onClient={setSelectedClient} />
           ) : view === "domains" ? (
@@ -311,74 +311,66 @@ function PageTitle({ eyebrow, title, description, action }: { eyebrow?: string; 
   );
 }
 
-function Dashboard({ onView, onClient, completedTasks, setCompletedTasks }: { onView: (view: View) => void; onClient: (client: (typeof clients)[number]) => void; completedTasks: number[]; setCompletedTasks: (tasks: number[]) => void }) {
+function Dashboard({ onView, onClient, onAsk, completedTasks, setCompletedTasks }: { onView: (view: View) => void; onClient: (client: (typeof clients)[number]) => void; onAsk: () => void; completedTasks: number[]; setCompletedTasks: (tasks: number[]) => void }) {
+  const [showAllTasks, setShowAllTasks] = useState(false);
   const toggleTask = (index: number) => setCompletedTasks(completedTasks.includes(index) ? completedTasks.filter((item) => item !== index) : [...completedTasks, index]);
   return (
-    <>
-      <section className="welcome">
-        <div><span className="eyebrow">Monday, 20 July</span><h1>Good morning, Ben.</h1><p>Here’s what needs your attention across Hayes Communications.</p></div>
-        <div className="day-chip"><span className="live-dot" />Quiet morning <strong>4 tasks today</strong></div>
-      </section>
+    <section className="studio-home">
+      <header className="studio-greeting">
+        <span className="studio-date">Monday, 21 July</span>
+        <h1>Good morning, Ben.</h1>
+        <p>I’ve checked the studio. It’s a calm start—there’s one thing worth looking at first.</p>
+      </header>
 
-      <section className="metrics-grid">
-        <button className="metric-card" onClick={() => onView("clients")}><span>Active clients</span><strong>12</strong><small><b>↑ 2</b> this quarter</small><i>View clients ↗</i></button>
-        <button className="metric-card" onClick={() => onView("projects")}><span>Open projects</span><strong>3</strong><small>2 on track · <b className="amber">1 at risk</b></small><i>View projects ↗</i></button>
-        <button className="metric-card revenue-card" onClick={() => onView("clients")}><span>Monthly revenue</span><strong>$18.4k</strong><small><b>↑ 8.2%</b> vs last month</small><MiniChart /></button>
-        <button className="metric-card renew-card" onClick={() => onView("renewals")}><span>Renewals due</span><strong>2</strong><small>Within the next 30 days</small><i>Review renewals ↗</i></button>
-      </section>
+      <div className="conversation-layout">
+        <div className="conversation-thread">
+          <article className="assistant-message">
+            <div className="exa-avatar"><BrandMark /></div>
+            <div className="message-body">
+              <span className="speaker">EXA · just now</span>
+              <p className="message-lead">The Field House staging site is ready for your review. The commerce migration is moving well, but feedback today will keep Friday’s handoff comfortable.</p>
+              <button className="focus-card" onClick={() => onClient(clients[2])}>
+                <span className="client-avatar amber">FH</span>
+                <span><small>BEST PLACE TO START</small><strong>Review Field House staging</strong><em>Due today · about 20 minutes</em></span>
+                <b>Open ↗</b>
+              </button>
+              <div className="message-actions"><button onClick={() => onClient(clients[2])}>Open client</button><button onClick={() => onView("projects")}>See project notes</button></div>
+            </div>
+          </article>
 
-      <section className="dashboard-grid">
-        <article className="panel tasks-panel">
-          <div className="panel-head"><div><span className="eyebrow">Monday</span><h2>Today’s tasks</h2></div><button onClick={() => onView("projects")}>View all <span>↗</span></button></div>
-          <div className="task-list">
-            {tasks.map((task, index) => {
+          <article className="assistant-message quiet-message">
+            <div className="exa-avatar small">E</div>
+            <div className="message-body">
+              <span className="speaker">A small heads-up</span>
+              <p><strong>fieldhouse.com.au</strong> renews in 19 days. Auto-renew is on, so there’s nothing urgent—I’ve kept it here in case you want to check the registrar details.</p>
+              <button className="text-link" onClick={() => onView("renewals")}>Review the renewal <span>→</span></button>
+            </div>
+          </article>
+
+          <button className="ask-box" onClick={onAsk}>
+            <span>Ask EXA anything about a client or the studio…</span><kbd>⌘ K</kbd><b>↑</b>
+          </button>
+          <div className="prompt-row"><button onClick={onAsk}>What needs my attention?</button><button onClick={() => onView("clients")}>Open a client</button><button onClick={() => onView("projects")}>What’s moving this week?</button></div>
+        </div>
+
+        <aside className="today-note">
+          <div className="note-heading"><span>Today</span><em>{completedTasks.length}/{tasks.length} done</em></div>
+          <p className="note-intro">A short list, in a useful order.</p>
+          <div className="gentle-tasks">
+            {tasks.slice(0, showAllTasks ? tasks.length : 2).map((task, index) => {
               const done = completedTasks.includes(index);
-              return <div className={`task-row ${done ? "done" : ""}`} key={task.title}>
+              return <div className={done ? "done" : ""} key={task.title}>
                 <button className="task-check" aria-label={`${done ? "Mark incomplete" : "Complete"} ${task.title}`} aria-pressed={done} onClick={() => toggleTask(index)}>{done ? "✓" : ""}</button>
-                <div className="task-copy"><strong>{task.title}</strong><span>{task.meta}</span></div>
-                {task.priority === "High" && <em>Priority</em>}<time>{task.time}</time>
+                <span><strong>{task.title}</strong><small>{task.time} · {task.meta.split(" · ")[0]}</small></span>
               </div>;
             })}
           </div>
-          <button className="add-row">＋ Add a task</button>
-        </article>
-
-        <article className="panel renewals-panel">
-          <div className="panel-head"><div><span className="eyebrow">Next 30 days</span><h2>Renewals</h2></div><button onClick={() => onView("renewals")}>View all <span>↗</span></button></div>
-          <div className="renewal-feature">
-            <div className="renewal-date"><strong>08</strong><span>AUG</span></div>
-            <div><h3>fieldhouse.com.au</h3><p>Field House · GoDaddy</p><span className="warning-pill">19 days remaining</span></div>
-          </div>
-          <div className="renewal-small"><div className="renewal-date"><strong>26</strong><span>AUG</span></div><div><h3>southsidefoundation.org</h3><p>Southside Foundation · Namecheap</p></div><span>37d</span></div>
-          <button className="review-button" onClick={() => onView("renewals")}>Review renewals <span>→</span></button>
-        </article>
-
-        <article className="panel health-panel">
-          <div className="panel-head"><div><span className="eyebrow">Portfolio</span><h2>Client health</h2></div><button onClick={() => onView("clients")}>View all <span>↗</span></button></div>
-          <div className="health-score">
-            <div className="score-ring"><strong>86</strong><span>/100</span></div>
-            <div><h3>Portfolio is healthy</h3><p>10 healthy · 1 attention · 1 at risk</p></div>
-            <span className="trend">↑ 3 pts</span>
-          </div>
-          <div className="client-health-list">
-            {clients.slice(0, 4).map((client) => <button key={client.name} onClick={() => onClient(client)}>
-              <span className={`client-avatar ${client.tone}`}>{client.initials}</span>
-              <span><strong>{client.name}</strong><small>{client.industry}</small></span>
-              <i className={client.health < 80 ? "attention" : ""} style={{ "--score": `${client.health}%` } as React.CSSProperties}><b /></i>
-              <em>{client.health}</em>
-            </button>)}
-          </div>
-        </article>
-
-        <article className="panel activity-panel">
-          <div className="panel-head"><div><span className="eyebrow">Latest</span><h2>Recent activity</h2></div><button>View all <span>↗</span></button></div>
-          <div className="activity-list">
-            {activity.map((item) => <div key={item.text}><span>{item.icon}</span><p><strong>{item.text}</strong><small>{item.client}</small></p><time>{item.time}</time></div>)}
-          </div>
-          <div className="next-meeting"><span className="pulse" /><div><small>UP NEXT · 11:30 AM</small><strong>Field House weekly check-in</strong></div><button>Join ↗</button></div>
-        </article>
-      </section>
-    </>
+          <button className="show-more" onClick={() => setShowAllTasks(!showAllTasks)}>{showAllTasks ? "Show less" : "Show two more"} <span>↓</span></button>
+          <div className="studio-pulse"><i /><span><strong>Everything else looks steady.</strong><small>12 clients checked · sites and SSL healthy</small></span></div>
+          <button className="text-link" onClick={() => onView("clients")}>Browse the studio <span>→</span></button>
+        </aside>
+      </div>
+    </section>
   );
 }
 
@@ -496,7 +488,7 @@ function SettingsPage({ setToast }: { setToast: (message: string) => void }) {
       <PageTitle title="Settings" description="Configure EXA for Hayes Communications." />
       <div className="settings-layout">
         <aside><button className="active">General</button><button>Integrations</button><button>Notifications</button><button>Security</button><button>Team</button></aside>
-        <section className="panel settings-panel"><div><h2>Workspace</h2><p>Basic details for your EXA workspace.</p></div><label>Workspace name<input defaultValue="Hayes Communications" /></label><label>Workspace URL<div className="input-prefix"><span>exa.hayescomms.com/</span><input defaultValue="workspace" /></div></label><label>Timezone<select defaultValue="hobart"><option value="hobart">Australia/Hobart (AEST)</option><option value="sydney">Australia/Sydney (AEST)</option></select></label><hr /><div><h2>Appearance</h2><p>EXA is dark-first. A light theme can be added later.</p></div><div className="theme-choice"><button className="selected"><i className="theme-dark" /><span><strong>Dark</strong><small>Selected</small></span></button><button disabled><i className="theme-light" /><span><strong>Light</strong><small>Coming later</small></span></button></div><footer><button onClick={() => setToast("Workspace settings saved")}>Save changes</button></footer></section>
+        <section className="panel settings-panel"><div><h2>Workspace</h2><p>Basic details for your EXA workspace.</p></div><label>Workspace name<input defaultValue="Hayes Communications" /></label><label>Workspace URL<div className="input-prefix"><span>exa.hayescomms.com/</span><input defaultValue="workspace" /></div></label><label>Timezone<select defaultValue="hobart"><option value="hobart">Australia/Hobart (AEST)</option><option value="sydney">Australia/Sydney (AEST)</option></select></label><hr /><div><h2>Appearance</h2><p>EXA uses a calm light theme designed for focused studio work.</p></div><div className="theme-choice"><button className="selected"><i className="theme-light" /><span><strong>Light</strong><small>Selected</small></span></button><button disabled><i className="theme-dark" /><span><strong>Dark</strong><small>Not in use</small></span></button></div><footer><button onClick={() => setToast("Workspace settings saved")}>Save changes</button></footer></section>
       </div>
     </>
   );

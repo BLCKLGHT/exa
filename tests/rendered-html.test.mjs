@@ -12,15 +12,17 @@ async function render() {
   );
 }
 
-test("server-renders the EXA operational hub", async () => {
+test("server-renders the EXA studio companion", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, /EXA — Hayes Communications/);
   assert.match(html, /Good morning, Ben/);
-  assert.match(html, /Today’s tasks/);
-  assert.match(html, /Client health/);
+  assert.match(html, /I’ve checked the studio/);
+  assert.match(html, /Ask EXA anything/);
+  assert.match(html, /Everything else looks steady/);
+  assert.match(html, /class="light"/);
   assert.doesNotMatch(html, /codex-preview/);
   assert.doesNotMatch(html, /react-loading-skeleton/);
 });

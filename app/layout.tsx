@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
   const description =
-    "The operational hub for Hayes Communications. Every client resource, one place.";
+    "A calmer way to run the studio. The operational companion for Hayes Communications.";
 
   return {
     metadataBase: new URL(origin),
@@ -35,14 +35,14 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: "/favicon.svg",
     },
     openGraph: {
-      title: "EXA — Open every morning",
+      title: "EXA — A calmer way to run the studio",
       description,
       type: "website",
       images: [{ url: `${origin}/og.png`, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "EXA — Open every morning",
+      title: "EXA — A calmer way to run the studio",
       description,
       images: [`${origin}/og.png`],
     },
@@ -55,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
