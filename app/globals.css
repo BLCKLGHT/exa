@@ -442,3 +442,88 @@ kbd { border: 1px solid #30342d; background: #171917; color: #747970; border-rad
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+/* Legibility pass: keep the compact command-center layout without microtype. */
+body { font-size: 16px; }
+.nav-item { height: 46px; font-size: 14px; }
+.nav-label { font-size: 11px; }
+.system-status strong, .profile strong { font-size: 12px; }
+.system-status small, .profile small { font-size: 11px; }
+.crumb { font-size: 13px; }
+.search-trigger, .quick-add { font-size: 13px; }
+kbd { font-size: 10px; }
+.eyebrow { font-size: 11px; }
+.welcome p, .page-title p { font-size: 15px; line-height: 1.55; }
+.day-chip { font-size: 12px; }
+.metric-card { min-height: 146px; padding: 22px; }
+.metric-card > span { font-size: 13px; }
+.metric-card > strong { margin-top: 15px; font-size: 34px; }
+.metric-card small { font-size: 12px; }
+.metric-card > i { font-size: 11px; }
+.panel-head { min-height: 78px; padding: 18px 21px; }
+.panel-head h2 { font-size: 17px; }
+.panel-head button, .helper { font-size: 12px; }
+.task-row { min-height: 78px; }
+.task-copy strong { font-size: 14px; }
+.task-copy span { font-size: 12px; }
+.task-row em { font-size: 10px; }
+.task-row time { width: 62px; font-size: 11px; }
+.add-row { height: 49px; font-size: 12px; }
+.renewal-feature h3, .renewal-small h3 { font-size: 13px; }
+.renewal-feature p, .renewal-small p { font-size: 11px; }
+.warning-pill, .quiet-pill, .review-button { font-size: 11px; }
+.health-score h3 { font-size: 14px; }
+.health-score p, .health-score .trend { font-size: 11px; }
+.client-health-list button { height: 62px; }
+.client-health-list strong { font-size: 13px; }
+.client-health-list small { font-size: 11px; }
+.client-health-list em { font-size: 12px; }
+.activity-list > div { min-height: 62px; }
+.activity-list strong { font-size: 13px; }
+.activity-list small, .activity-list time { font-size: 11px; }
+.next-meeting small { font-size: 10px; }
+.next-meeting strong, .next-meeting button { font-size: 12px; }
+.primary-action { height: 42px; font-size: 13px; }
+.filter-bar button { height: 38px; font-size: 12px; }
+.client-card h2 { font-size: 18px; }
+.client-card > p { font-size: 12px; }
+.client-card-meta small, .client-card-bottom small, .website-meta small { font-size: 10px; }
+.client-card-meta strong { font-size: 12px; }
+.client-card-bottom > strong { font-size: 11px; }
+.summary-strip small { font-size: 12px; }
+.summary-strip strong { font-size: 23px; }
+.table-head { height: 48px; font-size: 11px; }
+.table-row { min-height: 74px; font-size: 13px; }
+.table-row small { font-size: 11px; }
+.browser-bar span { font-size: 10px; }
+.website-body h2 { font-size: 16px; }
+.website-body p, .website-meta strong { font-size: 12px; }
+.renewal-hero p { font-size: 13px; }
+.timeline-card h3 { font-size: 14px; }
+.timeline-card p, .timeline-card > button { font-size: 11px; }
+.project-status, .progress-label { font-size: 10px; }
+.project-card h3, .feature-project h3 { font-size: 14px; }
+.project-card > p, .feature-project > p, .project-card footer { font-size: 11px; }
+.back-link { font-size: 12px; }
+.client-hero p, .hero-health > span, .hero-health em { font-size: 12px; }
+.tabs button { height: 45px; font-size: 12px; }
+.launch-grid a strong, .launch-grid a em { font-size: 11px; }
+.detail-panel dt { font-size: 11px; }
+.detail-panel dd { font-size: 13px; }
+.support-preview strong { font-size: 13px; }
+.support-preview small, .note-preview > span { font-size: 11px; }
+.empty-section p { font-size: 13px; }
+.settings-layout > aside button, .settings-panel p, .settings-panel label,
+.settings-panel input, .settings-panel select, .theme-choice strong,
+.theme-choice small, .settings-panel footer button { font-size: 12px; }
+.result-label { font-size: 10px; }
+.search-results strong { font-size: 14px; }
+.search-results small, .search-results em, .command-footer, .toast { font-size: 11px; }
+
+@media (max-width: 640px) {
+  .sidebar { height: 68px; }
+  .sidebar .nav-item { height: 53px; font-size: 10px; }
+  .main { padding-bottom: 69px; }
+  .metric-card { min-height: 138px; }
+  .metric-card > strong { font-size: 30px; }
+}
